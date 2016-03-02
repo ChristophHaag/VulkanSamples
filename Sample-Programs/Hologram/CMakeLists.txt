@@ -1,3 +1,4 @@
+cmake_minimum_required(VERSION 3.1)
 find_package(PythonInterp 3 REQUIRED)
 find_package(Threads REQUIRED)
 
@@ -63,6 +64,8 @@ if(WIN32)
 else()
     list(APPEND libraries PRIVATE -ldl)
 
+    find_package(ECM REQUIRED NO_MODULE)
+    set(CMAKE_MODULE_PATH ${ECM_FIND_MODULE_DIR})
     find_package(XCB REQUIRED)
 
     list(APPEND sources ShellXcb.cpp ShellXcb.h)
@@ -75,4 +78,5 @@ endif()
 add_executable(Hologram ${sources})
 target_compile_definitions(Hologram ${definitions})
 target_include_directories(Hologram ${includes})
+set_property(TARGET Hologram PROPERTY CXX_STANDARD 11)
 target_link_libraries(Hologram ${libraries})
